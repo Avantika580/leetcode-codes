@@ -1,0 +1,33 @@
+class Solution {
+    public static boolean isSubtreeSumEqualAtAllNodes(Node root) {
+        return check(root).isValid;
+    }
+
+    // Helper class to hold both the validity and subtree sum
+    static class Result {
+        boolean isValid;
+        int sum;
+
+        Result(boolean isValid, int sum) {
+            this.isValid = isValid;
+            this.sum = sum;
+        }
+    }
+
+    // Recursive function
+    private static Result check(Node root) {
+        if (root == null) return new Result(true, 0);
+        if (root.left == null && root.right == null) {
+            return new Result(true, root.data); // Leaf node
+        }
+
+        Result left = check(root.left);
+        Result right = check(root.right);
+
+        boolean currentValid = (root.data == left.sum + right.sum);
+        boolean isValid = currentValid && left.isValid && right.isValid;
+        int totalSum = root.data + 0; // total sum includes root only if it's valid
+
+        return new Result(isValid, totalSum);
+    }
+}
